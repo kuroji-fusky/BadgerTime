@@ -1,6 +1,7 @@
 <script lang="ts">
   import { onMount } from "svelte";
   import UploadRow from "./UploadRow.svelte";
+  import { WEEKS } from "./UploadConst";
 
   export interface Props {
     condensed?: true;
@@ -8,19 +9,9 @@
 
   const { condensed }: Props = $props();
 
-  const WEEKS = [
-    "Sunday",
-    "Monday",
-    "Tuesday",
-    "Wednesday",
-    "Thursday",
-    "Friday",
-    "Saturday",
-  ];
-
   let containerRoot: HTMLDivElement;
 
-  // We'll keep track state for the modal
+  // We'll keep track state for the tooltip
   let isHovering = $state(false);
   let currentHourBlock = $state<Element | null>(null);
 
