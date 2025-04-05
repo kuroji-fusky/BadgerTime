@@ -1,0 +1,8 @@
+@import "tailwindcss";
+@import "@fontsource/inter";
+@import "@fontsource/azeret-mono";
+
+@theme {
+  --font-body: "Inter", var(--default-font-family);
+  --font-mono: "Azeret Mono", var(--default-mono-font-family);
+}

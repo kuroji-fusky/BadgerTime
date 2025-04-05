@@ -1,0 +1,6 @@
+packages:
+  - packages/*
+  - web
+onlyBuiltDependencies:
+  - '@biomejs/biome'
+  - esbuild
