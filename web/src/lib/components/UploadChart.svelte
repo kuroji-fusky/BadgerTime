@@ -22,33 +22,28 @@
 
   // We'll keep track state for the modal
   let isHovering = $state(false);
-  let currentElement = $state<Element | null>();
+  let currentHourBlock = $state<Element | null>(null);
 
-  const handleBlockPosition = (e: MouseEvent) => {
-    const { left, top } = containerRoot.getBoundingClientRect();
-    const relX = e.x - left;
-    const relY = e.y - top;
+  const handleBlockHover = (e: MouseEvent) => {
+    const t = e.target as HTMLElement;
 
-    const elementCursor = document.elementFromPoint(relX, relY);
+    if (!t.attributes.getNamedItem("data-hour-block")) return;
+    if (currentHourBlock === t) return;
+    currentHourBlock = t;
 
-    // This will effectively debounce from all the damn console.logs
-    if (elementCursor === currentElement) return;
-    currentElement = elementCursor;
-
-    // Get only the attribute [data-day-block]
-    // if (!currentElement?.attributes.getNamedItem("data-day-block")) return;
+    const tRekt = t.getBoundingClientRect();
+    console.log(tRekt);
   };
 
   onMount(() => {
+    // Can't use AbortController on these since the user will phase in and out of its container boundaries
     const enterTrue = () => {
       isHovering = true;
-
-      containerRoot.addEventListener("pointermove", handleBlockPosition);
+      containerRoot.addEventListener("pointermove", handleBlockHover);
     };
     const enterFalse = () => {
       isHovering = false;
-
-      containerRoot.removeEventListener("pointermove", handleBlockPosition);
+      containerRoot.removeEventListener("pointermove", handleBlockHover);
     };
 
     const containerController = new AbortController();
