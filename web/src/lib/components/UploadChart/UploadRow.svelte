@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { cn } from "$lib/utils";
   import type { Props as RootProps } from "./UploadChart.svelte";
 
   interface Props extends RootProps {
@@ -8,10 +9,15 @@
 
   const { day, condensed, labelOnly }: Props = $props();
 
-  const hourPopulate = [...Array(!condensed ? 24 : 8)];
+  // For proto only
+  const hourPopulate = [...Array(6)];
 
   // biome-ignore lint/style/noNonNullAssertion: no type safety on terniary operators
   const miniDay = !labelOnly ? [...day!].slice(0, 3).join("") : "";
+
+  // This is to make the hour block unique while still being technically the same element visually
+  // as it causes some issues when comparing the element and its data contained from it
+  const randHash = crypto.randomUUID();
 </script>
 
 <div
@@ -26,12 +32,18 @@
     </span>
   {/if}
   <!-- blocks -->
-  <div class={`grid *:h-3.5 gap-y-1 w-full ${!labelOnly ? "" : "mt-8"}`}>
+  <div
+    class={cn(
+      "grid gap-y-1 w-full",
+      !labelOnly ? "" : "mt-8",
+      !condensed ? "*:h-3.5 lg:*:h-4" : "*:h-3.5",
+    )}
+  >
     {#each hourPopulate as _, idx}
       {#if !labelOnly}
         <div
           data-hour-block={miniDay.toLowerCase()}
-          data-block-index={idx}
+          data-block-index={`${idx}-${randHash}`}
           class="w-full border border-neutral-500/30 rounded-sm"
         ></div>
       {:else}
